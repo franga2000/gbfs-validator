@@ -19,7 +19,7 @@ RUN yarn install --frozen-lockfile
 ADD . /app
 
 # Patch the website to listen on all interfaces and patch netlify to have a longer timeout
-RUN sed -i 's/"dev": "vite"/"dev": "vite --host 0.0.0.0"/g' /app/website/package.json \
+RUN sed -i 's/"dev": "vite"/"dev": "vite --host 0.0.0.0"/g' /app/website/package.json && \
     sed -i 's/SYNCHRONOUS_FUNCTION_TIMEOUT = 10/SYNCHRONOUS_FUNCTION_TIMEOUT = 100/g' /app/node_modules/netlify-cli/src/utils/dev.js
 
 CMD ["yarn", "run", "dev"]
