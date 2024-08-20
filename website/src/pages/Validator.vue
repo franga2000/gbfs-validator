@@ -15,17 +15,18 @@ const state = reactive({
       type: null,
       basicAuth: { user: null, password: null },
       bearerToken: { token: null },
-      apiKey: { key: null },
       oauthClientCredentialsGrant: {
         user: null,
         password: null,
         tokenUrl: null
-      }
+      },
+      headers: [{key: null}, {key: null}, {key: null}]
     }
   },
   versions: [
     { value: null, text: 'auto-detection' },
-    { value: '3.0-RC', text: 'v3.0-RC' },
+    { value: '3.1-RC', text: 'v3.1-RC' },
+    { value: '3.0', text: 'v3.0' },
     { value: '2.3', text: 'v2.3' },
     { value: '2.2', text: 'v2.2' },
     { value: '2.1', text: 'v2.1' },
@@ -36,7 +37,7 @@ const state = reactive({
   auths: [
     {
       value: null,
-      text: 'none'
+      text: 'None'
     },
     {
       value: 'basic_auth',
@@ -47,12 +48,12 @@ const state = reactive({
       text: 'Bearer Token'
     },
     {
-      value: 'api_key',
-      text: 'API Key'
-    },
-    {
       value: 'oauth_client_credentials_grant',
       text: 'Oauth Client Credentials Grant'
+    },
+    {
+      value: 'headers',
+      text: 'Custom Headers (e.g. API Key)'
     }
   ]
 })
@@ -150,10 +151,10 @@ function updateURL() {
             >
           </b-form-group>
         </b-tab>
-        <b-tab title="Authentification">
+        <b-tab title="Authentication">
           <b-form-group
             id="input-group-auth"
-            label="Authentification"
+            label="Authentication"
             label-for="input-auth"
             class="mb-3"
           >
@@ -166,7 +167,7 @@ function updateURL() {
 
           <b-form-group
             id="input-group-basic_auth"
-            label="Authentification"
+            label="Authentication"
             label-for="input-basic_auth"
             v-if="state.options.auth.type === 'basic_auth'"
           >
@@ -190,7 +191,7 @@ function updateURL() {
 
           <b-form-group
             id="input-group-bearer_token"
-            label="Authentification"
+            label="Authentication"
             label-for="input-bearer_token"
             v-if="state.options.auth.type === 'bearer_token'"
           >
@@ -201,25 +202,25 @@ function updateURL() {
             ></b-form-input>
           </b-form-group>
 
-           <b-form-group
-            id="input-group-api_key"
-            label="Authentification"
-            label-for="input-api_key"
-            v-if="state.options.auth.type === 'api_key'"
+          <b-form-group
+            id="input-group-headers"
+            label="Authentication"
+            label-for="input-headers"
+            v-if="state.options.auth.type === 'headers'"
           >
-            <b-row>
+            <b-row v-for="index in 3" class="mb-2">
               <b-col>
                 <b-form-input
-                  id="input-api_key-key"
+                  :id="'input-headers-' + index + '-key'"
                   placeholder="key"
-                  v-model="state.options.auth.apiKey.key"
+                  v-model="state.options.auth.headers[index-1].key"
                 ></b-form-input>
               </b-col>
               <b-col>
                 <b-form-input
-                  id="input-api_key-value"
+                  :id="'input-headers-' + index + '-value'"
                   placeholder="value"
-                  v-model="state.options.auth.apiKey.value"
+                  v-model="state.options.auth.headers[index-1].value"
                 ></b-form-input>
               </b-col>
             </b-row>
@@ -227,7 +228,7 @@ function updateURL() {
 
           <b-form-group
             id="input-group-oauth_client_credentials_grant"
-            label="Authentification"
+            label="Authentication"
             label-for="input-bearer_token"
             v-if="state.options.auth.type === 'oauth_client_credentials_grant'"
           >

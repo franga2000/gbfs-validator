@@ -37,7 +37,7 @@ const errorsCountFormated = computed(() => {
             Detected version <b>{{ result.summary.version.detected }} </b> and
             validate with
             <a
-              :href="`https://github.com/NABSA/gbfs/blob/v${result.summary.version.validated}/gbfs.md`"
+              :href="`https://github.com/MobilityData/gbfs/blob/v${result.summary.version.validated}/gbfs.md`"
               ><b>{{ result.summary.version.validated }}</b></a
             >
           </b-alert>
@@ -45,7 +45,9 @@ const errorsCountFormated = computed(() => {
           <div>
             <b-alert v-if="result.summary.hasErrors" variant="danger" show>
               Invalid GBFS feed <br />
-              <b>{{ errorsCountFormated }} errors</b>
+              <!-- hasErrors can be json errors or required file presence errors. errorsCountFormated is only json errors.
+              We want to display that the feed is invalid in all cases but not the number of errors if it's 0. -->
+              <b v-if="errorsCountFormated > 0">{{ errorsCountFormated }} errors</b>
             </b-alert>
             <b-alert v-else variant="success" show>Valid !</b-alert>
           </div>

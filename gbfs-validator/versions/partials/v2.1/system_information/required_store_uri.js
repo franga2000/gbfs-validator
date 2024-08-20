@@ -1,10 +1,10 @@
 module.exports = ({ android = false, ios = false }) => {
-  const r = {
+  const partial = {
     $id: 'required_ios_store_uri.json#',
     $patch: {
       source: {
         $ref:
-          'https://github.com/NABSA/gbfs/blob/v2.1/gbfs.md#system_informationjson'
+          'https://github.com/MobilityData/gbfs/blob/v2.1/gbfs.md#system_informationjson'
       },
       with: [
         {
@@ -17,7 +17,7 @@ module.exports = ({ android = false, ios = false }) => {
     $merge: {
       source: {
         $ref:
-          'https://github.com/NABSA/gbfs/blob/v2.1/gbfs.md#system_informationjson'
+          'https://github.com/MobilityData/gbfs/blob/v2.1/gbfs.md#system_informationjson'
       },
       with: {
         properties: {
@@ -42,20 +42,20 @@ module.exports = ({ android = false, ios = false }) => {
   }
 
   if (ios) {
-    r.$merge.with.properties.data.properties.rental_apps.required.push('ios')
-    r.$merge.with.properties.data.properties.rental_apps.properties.ios.required.push(
+    partial.$merge.with.properties.data.properties.rental_apps.required.push('ios')
+    partial.$merge.with.properties.data.properties.rental_apps.properties.ios.required.push(
       'store_uri'
     )
   }
 
   if (android) {
-    r.$merge.with.properties.data.properties.rental_apps.required.push(
+    partial.$merge.with.properties.data.properties.rental_apps.required.push(
       'android'
     )
-    r.$merge.with.properties.data.properties.rental_apps.properties.android.required.push(
+    partial.$merge.with.properties.data.properties.rental_apps.properties.android.required.push(
       'store_uri'
     )
   }
 
-  return r
+  return partial
 }
